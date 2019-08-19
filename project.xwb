@@ -1,0 +1,3 @@
+iif(file("readme.htm"),XWBDisplayHTML("Template: SmallWebApp",memoread("readme.htm")),nil)
+
+

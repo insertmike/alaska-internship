@@ -1,0 +1,118 @@
+<%#page layout="./local-table.layout"%>
+
+<div class="container">
+<%
+  // Permission check
+  IF(!UserService():isManager())
+    ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+
+ // Get all holiday requests to display them
+ aEmployeeHolidays := Employee_Holiday():all("employee_id")
+ /// Get all employees to display the name for a holiday request
+ aEmployees := EmployeeModel():all("employee_name")
+ // Get current user to make sure that a user is not approving/rejecting his own requests
+ oUser := AccountMgmt():getCurrentUser()
+%>
+
+<div class="wrapper">
+   <h1 class="local__table__header"> Holiday Requests </h1>
+   <hr class="customform__fix">
+
+  <!-- App table starts -->
+  <table class=" text-center table-hover table-striped local__table" id="holiday-requests">
+      <!-- Static header start -->
+        <thead>
+            <tr>
+                <th class="th__local__table"> <span class="glyphicon glyphicon-user mr-3"></span>Employee</th>
+                <th class="th__local__table"> <span class="glyphicon glyphicon-calendar mr-3"></span>From</th>
+                <th class="th__local__table"> <span class="glyphicon glyphicon-calendar mr-3"></span>To</th>
+                <th class="th__local__table"> <span class="glyphicon glyphicon-info-sign mr-3"></span></th>
+                <th class="th__local__table"> <span class="glyphicon glyphicon-cog mr-3"></span></th>
+            </tr>
+        </thead>
+      <!-- Static header end-->
+      <!-- Dynamic body start -->
+        <tbody>
+@FOR n:= 1 TO Len( aEmployeeHolidays )
+            <tr id="employee_holidays_@(aEmployeeHolidays[n]:employee_holiday_id)">
+            <%
+              nEmpId := aEmployeeHolidays[n]:employee_id
+              oData := EmployeeModel():findBy( "employee_id", nEmpId )
+              resolution := aEmployeeHolidays[n]:resolution
+              cStartDate := DateController():formatDbDate(aEmployeeHolidays[n]:start_date)
+              cEndDate  := DateController():formatDbDate(aEmployeeHolidays[n]:end_date)
+              cReason := aEmployeeHolidays[n]:reason
+              isCurrentEmployee := oData:employee_id != oUser:employee_id
+            %>
+
+               <td class="td__local__table">@(oData:employee_name)</td>
+               <td class="td__local__table">@(cStartDate)</td>
+               <td class="td__local__table">@(cEndDate)</td>
+               <td class="td__local__table">@(IIF(Empty(cReason), "-", cReason))</td>
+               <td>
+
+
+            @DO CASE
+
+            @CASE (Empty(resolution))
+            <%
+               start_date := aEmployeeHolidays[n]:start_date
+            %>
+            <button class="btn btn-outline-secondary btn-sm"
+                   data-confirm="Check for overlapping holidays of @(oData:employee_name + "'s") holiday request starting from @(DToC(aEmployeeHolidays[n]:start_date)) to @(DToC(aEmployeeHolidays[n]:end_date))"
+
+                   @( IIF(isCurrentEmployee, "data-action='./request-overlap.cxp'","disabled"))
+                   data-parameter="fields:start_date='@(AllTrim(DtoC(aEmployeeHolidays[n]:start_date)))', end_date='@(AllTrim(DtoC(aEmployeeHolidays[n]:end_date)))'">
+                   @( IIF(isCurrentEmployee, "<span class='p-2 glyphicon glyphicon-search text-dark'></span>","<span class='p-2 glyphicon glyphicon-search text-secondary'></span>"))
+           </button>
+
+            <button class="btn btn-outline-secondary btn-sm"
+                   data-confirm="Approving @(oData:employee_name + "'s") holiday request starting from @(DToC(aEmployeeHolidays[n]:start_date)) to @(DToC(aEmployeeHolidays[n]:end_date))"
+
+                   @( IIF(isCurrentEmployee, "data-action='./approve-holiday.cxp'","disabled"))
+
+
+                   data-parameter="fields:id='@(AllTrim(Str(aEmployeeHolidays[n]:employee_holiday_id)))'">
+
+                   @( IIF(isCurrentEmployee, "<span class='p-2 glyphicon glyphicon-ok text-success'></span>","<span class='p-2 glyphicon glyphicon-ok text-secondary'></span>"))
+           </button>
+
+           <button class="btn btn-outline-secondary btn-sm"
+                   data-confirm="Rejecting @(oData:employee_name + "'s") holiday request starting from @(DToC(aEmployeeHolidays[n]:start_date)) to @(DToC(aEmployeeHolidays[n]:end_date))"
+
+                   @( IIF(isCurrentEmployee, "data-action='./reject-holiday.cxp'","disabled"))
+                   data-parameter="fields:id='@(AllTrim(Str(aEmployeeHolidays[n]:employee_holiday_id)))'">
+                   @( IIF(isCurrentEmployee, "<span class='p-2 glyphicon glyphicon-remove text-danger'></span>","<span class='p-2 glyphicon glyphicon-remove text-secondary'></span>"))
+           </button>
+
+
+
+            @CASE (resolution == -1)
+               <span class="text-danger">Rejected</span>
+
+            @CASE (resolution == 1)
+               <span class="text-success">Approved</span>
+            @OTHERWISE
+               Error
+            @ENDCASE
+         </td>
+      </tr>
+@NEXT
+        </tbody>
+      <!-- Dynamic body end -->
+    </table>
+  <!-- App table ends -->
+
+
+@SECTION document_ready_scripts
+ $('#holiday-requests').DataTable( {
+    "ordering": true
+    } );
+
+
+
+
+
+
+

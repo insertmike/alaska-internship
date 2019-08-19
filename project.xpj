@@ -1,0 +1,167 @@
+[PROJECT]
+    VERSION       = 2.2
+    project.xpj
+
+[project.xpj]
+    smallwebapp.web
+    helpers\accountmgmt.dll
+    helpers\unit-test\runner.exe
+
+[smallwebapp.web]
+    COMPILE       = xpp
+    COMPILE_FLAGS = /q /w
+    DEBUG         = yes
+    GUI           = no
+    LINKER        = alink
+    LINK_FLAGS    = 
+    RC_COMPILE    = arc
+    RC_FLAGS      = 
+    DEPENDS_ON           = helpers\accountmgmt.dll
+    HOSTPROCESS          = index.cxp
+    INTERMEDIATE_DEBUG   = .debug
+    INTERMEDIATE_RELEASE = .release
+    SITE_ROOT     = C:\smallwebapp
+    SITE_URL      = http:
+// $START-AUTODEPEND
+    mof-sql.obj
+// $STOP-AUTODEPEND
+    about.cxp
+    application.config
+    approve-holiday.cxp
+    assets\css\components\tables.css
+    assets\css\components\timeline-view-table.css
+    assets\css\index.css
+    assets\css\login.css
+    assets\css\typography.css
+    assets\css\user-panel.css
+    assets\js\global.js
+    assets\js\holiday-calendar.js
+    assets\js\timeline-view-table.js
+    bank-holiday-add.cxp
+    bank-holiday-delete.cxp
+    bank-holiday-delete.cxp
+    bank-holiday-edit-form.cxp
+    bank-holiday-new-form.cxp
+    bank-holidays.cxp
+    bank-holiday-save.cxp
+    change-password.cxp
+    employee-add.cxp
+    employee-delete.cxp
+    employee-edit-form.cxp
+    employee-new-form.cxp
+    employee-panel.cxp
+    employee-save.cxp
+    holiday-calendar-main.cxp
+    holiday-requests.cxp
+    index.cxp
+    local-table.layout
+    local-table-index.cxp
+    local-table-timeline-view.layout
+    login.cxp
+    login-form.cxp
+    logout.cxp
+    manage-employees.cxp
+    manager-panel.cxp
+    my-holidays.cxp
+    pagelet-holiday-calendar-list-all.cxp
+    pagelet-holiday-calendar-list-individual.cxp
+    pagelet-holiday-calendar-timeline-all.cxp
+    pagelet-holiday-calendar-timeline-individual.cxp
+    reject-holiday.cxp
+    request-holiday.cxp
+    request-holiday-send.cxp
+    request-overlap.cxp
+    retrack-request.cxp
+    send-password.cxp
+    site.layout
+    .assets\xpp-model-framework\mof-sql.prg
+
+[helpers\accountmgmt.dll]
+    COMPILE       = xpp
+    COMPILE_FLAGS = /DLL:DYNAMIC /ga /wi /wl /wu /w
+    DEBUG         = yes
+    GUI           = no
+    LINKER        = alink
+    LINK_FLAGS    = /dll
+    RC_COMPILE    = arc
+    RC_FLAGS      = 
+    INTERMEDIATE_DEBUG   = .debug
+    INTERMEDIATE_RELEASE = .release
+    RUNPARAMETER         = 5000 index.cxp
+    WORKINGDIR           = u\\$2\public\cap-public\trunk\templates\smallwebapp
+    HOSTPROCESS          = ..\..\..\..\..\..\w32\bin\devwebserver.exe
+// $START-AUTODEPEND
+    accountmgmt.def
+    dac.ch
+    socket.ch
+    natmsg.ch
+    get.ch
+    prompt.ch
+    memvar.ch
+    collat.ch
+    sql.ch
+    std.ch
+    asinet.ch
+    set.ch
+    accountmgmt.obj
+    bankHolidays.obj
+    datecontroller.obj
+    employee.obj
+    employeeHolidays.obj
+    userservice.obj
+// $STOP-AUTODEPEND
+    accountmgmt.prg
+    bankHolidays.prg
+    datecontroller.prg
+    employee.prg
+    employeeHolidays.prg
+    userservice.prg
+
+[helpers\unit-test\runner.exe]
+    COMPILE       = xpp
+    COMPILE_FLAGS = /wi /wl /wu /q /w
+    DEBUG         = yes
+    GUI           = no
+    LINKER        = alink
+    LINK_FLAGS    = 
+    RC_COMPILE    = arc
+    RC_FLAGS      = 
+    INTERMEDIATE_DEBUG   = .debug
+    INTERMEDIATE_RELEASE = .release
+    DEPENDS_ON           = helpers\accountmgmt.dll
+    PRE_BUILD     = copy ..\*.lib . > nul
+    PRE_BUILD     = copy ..\*.dll . > nul
+// $START-AUTODEPEND
+    ..\accountmgmt.lib
+    ..\..\.assets\xpp-unit\unit-test.ch
+    sql.ch
+    dmlb.ch
+    dll.ch
+    prompt.ch
+    memvar.ch
+    collat.ch
+    set.ch
+    pgdbe.ch
+    natmsg.ch
+    dac.ch
+    get.ch
+    std.ch
+    ..\..\.assets\xpp-unit\helpers.prg
+    ..\..\.assets\xpp-unit\listener.prg
+    ..\..\.assets\xpp-unit\runner.prg
+    ..\..\.assets\xpp-unit\unit-test.prg
+    class.ch
+    bankHolidaysGroup.obj
+    dateControllerGroup.obj
+    employeeGroup.obj
+    employeeHolidayGroup.obj
+    test-loader.obj
+    userserviceGroup.obj
+// $STOP-AUTODEPEND
+    bankHolidaysGroup.prg
+    dateControllerGroup.prg
+    employeeGroup.prg
+    employeeHolidayGroup.prg
+    test-loader.prg
+    userserviceGroup.prg
+

@@ -1,0 +1,29 @@
+<%#page layout="./local-table.layout"%>
+<%
+  // Permission check
+  IF(!UserService():isManager())
+    ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+%>
+<!-- App Wrapper -->
+<div class="boxshadow border border-info p-5">
+  <h2 class="local__table__header"> Adding Bank Holiday </h2>
+  <hr class="customform__fix">
+  <!-- New Bank Holiday Form Start -->
+  <form id="new" class="needs-validation" action="./bank-holiday-add.cxp" method="post">
+    <!-- Date Datepicker -->
+    <div class="form-group">
+      <input class="form-control datepicker" type="text" name="date" autocomplete="off" readonly required="required"
+        placehoder="Bank Holiday Date" id="startdate"><i class="glyphicon-caledar--sm glyphicon glyphicon-calendar"></i>
+      <span id="bank_holiday_HelpBlock" class="form-text text-muted text-center">Pick a date</span>
+    </div>
+    <!-- Submit -->
+    <div class="form-group">
+      <input class="btn btn-outline-primary   btn-lg" type="submit" data-action="" value="Add Bank Holiday"
+        data-parameter="form:new">
+      <button class="btn btn-outline-secondary  btn-lg" data-action="./bank-holidays.cxp">Cancel</button>
+    </div>
+  </form>
+  <!-- New Bank Holiday Form Start -->
+</div>
+<!-- App Wrapper -->

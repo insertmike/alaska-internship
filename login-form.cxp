@@ -1,0 +1,92 @@
+<%#page layout="./site.layout" %>
+<%
+// Active Session Check
+  IF(AccountMgmt():isLoggedIn())
+    ::httpResponse:redirect( "login-form.cxp" )
+    RETURN
+  ENDIF
+
+ cError := ""
+ IF Empty(::session:errorMessage)
+   // remind referer use to navigate to after successfull log in
+   ::session:referer := ::HttpRequest:GetVariable("HTTP_REFERER")
+ ELSE
+   // we have an error message so lets take it
+   cError := ::session:errorMessage
+   ::session:errorMessage := NIL
+ ENDIF
+%>
+
+<!-- Wrapper Start -->
+<div class="container mt-4">
+  <!-- Static Sign In Start -->
+  <form class="form-signin text-center" id="signin">
+    <h1 class="h5 mb-3 font-weight-light text-left">Please enter your credentials</h1>
+    <!-- Email Address -->
+    <label for="email" class="sr-only">Email address</label>
+    <input name="email" type="email" id="email" class="form-control" placeholder="Email address" required="required"
+      autofocus>
+    <label for="password" class="sr-only">Password</label>
+    <input name="password" type="password" id="password" class="form-control" placeholder="Password"
+      required="required">
+    <!-- display error message if given -->
+    @IF !Empty(cError)
+    <div class="text-danger mt-1 mb-2">@(cError)</div>
+    @ENDIF
+
+    <button class="btn btn-primary btn-lg text-center pl-5 pr-5 bg-dark" type="button" data-action="/login.cxp"
+      data-parameter="form:signin">Login</button>
+
+    <a class="d-block mt-3 text-left" href="#" data-toggle="modal" data-target="#resetPassword">Reset Password</a>
+
+
+  </form>
+  <!-- Static Sign In Start -->
+</div>
+<!-- Wrapper End -->
+
+<!-- Reset Password Modal -->
+
+<!-- Static Reset Password Modal Start -->
+<div class="modal fade" id="resetPassword" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <!-- Modal Content Start-->
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="resetPasswordLabel">Reset Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <form id="new" class="needs-validation">
+          <div class="form-group">
+            <label for="user-email" class="col-form-label">Email address:</label>
+            <input type="text" class="form-control form-control-sm" id="user-email" name="useremail"
+              aria-describedby="user_email_nameHelpBlock" required>
+            <span id="user_email_nameHelpBlock" class="form-text text-muted">Enter your email address</span>
+          </div>
+          <div class="form-group">
+            <button type="submit" data-action="./send-password.cxp" data-parameter="form:new"
+              class="btn btn-primary">Send new password</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+      <!-- Modal Body -->
+    </div>
+    <!-- Modal Content End-->
+  </div>
+</div>
+<!-- Static Reset Password Modal End -->
+<script>
+  $('#resetPassword').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('whatever') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+  })
+</script>

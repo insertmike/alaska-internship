@@ -1,0 +1,36 @@
+<%#page layout="./local-table.layout"%>
+<%
+
+   // Active Session Check
+  IF(!AccountMgmt():isLoggedIn())
+    ::httpResponse:redirect( "login-form.cxp" )
+    RETURN
+  ENDIF
+
+   oUser := AccountMgmt():getCurrentUser()
+   nUserId :=  oUser:employee_id
+   userRole := oUser:employee_role
+   cLastLogin := DateController():formatDbDate(oUser:last_update)
+   nUserHolidayDays := Employee_Holiday():getHolidayDaysLeft(nUserId)
+   cUserRole := UserService():getUserRole(nUserId)
+   cUserEmail := oUser:email
+   
+   IF(Empty(cLastLogin))
+      cLastLogin := "First Time Logging"
+   ENDIF
+   cUserName := oUser:employee_name
+
+%>
+<!DOCTYPE html>
+<%#Page trace="no"%>
+<div class="wrapper d-flex align-items-center justify-content-center flex-column boxshadow">
+   <h1 class="local__table__header mb-0 border-bottom"> Welcome back, <em>@(cUserName)</em></h1>
+   <h3 class="mb-2 text-muted">@(cUserEmail)</h3>
+   <h3 class="mb-2 text-muted">@(cUserRole)</h3>
+   <h2 class="mb-3"> Holiday days left: <span class="text-info">@(nUserHolidayDays)</span></h3>
+      <h2 class="mb-4"> Last Login: <span class="text-info">@(cLastLogin)</span></h3>
+
+
+         <button onclick="location.href='./my-holidays.cxp';" class="btn btn-lg btn-dark align-self-center  p-3">Get
+            Started!</button>
+</div>

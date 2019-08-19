@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
+<version number="1.0" />
+<session>
+  <active file=".\site.layout" target=".\helpers\unit-test\runner.exe" />
+  <openfiles>
+    <openfile path=".\helpers\accountmgmt.prg" column="2" line="52" />
+    <openfile path=".\helpers\bankHolidays.prg" column="0" line="0" />
+    <openfile path=".\helpers\employee.prg" column="25" line="89" />
+    <openfile path=".\helpers\datecontroller.prg" column="0" line="0" />
+    <openfile path=".\helpers\employeeHolidays.prg" column="2" line="145" />
+    <openfile path=".\helpers\userservice.prg" column="45" line="139" />
+    <openfile path=".\helpers\unit-test\bankHolidaysGroup.prg" column="0" line="0" />
+    <openfile path=".\helpers\unit-test\dateControllerGroup.prg" column="0" line="0" />
+    <openfile path=".\helpers\unit-test\employeeGroup.prg" column="0" line="0" />
+    <openfile path=".\helpers\unit-test\employeeHolidayGroup.prg" column="0" line="0" />
+    <openfile path=".\helpers\unit-test\userserviceGroup.prg" column="0" line="0" />
+    <openfile path=".\application.config" column="35" line="11" />
+    <openfile path=".\helpers\unit-test\test-loader.prg" column="0" line="0" />
+    <openfile path=".\site.layout" column="20" line="105" />
+  </openfiles>
+  <breakpoints>
+    <breakpoint target    = ".\smallwebapp.web"
+                file      = ".\assets\js\global.js"
+                line      = "-1"
+                state     = "1"
+                condition = ".T."
+                fromPass  = "1"
+                toPass    = "-1"
+                everyPass = "1"
+                halt      = "Yes"
+                logMode   = "0"
+                msg       = "BREAKPOINT AT %ProcName()%(), LINE: %ProcLine()%"
+                logFile   = ""
+                />
+  </breakpoints>
+</session>

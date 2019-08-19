@@ -1,0 +1,15 @@
+<%#page layout="./site.layout" %>
+
+<div class="container boxshadow d-flex flex-column align-items-center justify-content-center">
+
+  <h1 class="display-3 mb-1">About <em class="text-info">HR Vacation Manager</em></h1>
+  <blockquote class="blockquote">
+    <p class="display-4 text-center" style="font-size: 2rem;">
+      HR Vacation Manager is a web based application, which helps people to manage their holidays. <br> Built by Mihail
+      Yonchev,
+      with the help and support of the Alaska Software's team and their Xbase++ Platform.
+    </p>
+    <footer class="blockquote-footer" style="font-size: 1.8rem;">Mihail Yonchev</footer>
+  </blockquote>
+
+</div>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <!-- ES6 Under IE -->
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <!-- Bootstrap core CSS -->
+   <link href="/.assets/bootstrap-4-1-3/css/bootstrap.min.css" rel="stylesheet">
+   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+   <!-- Typography -->
+   <link rel="stylesheet" type="text/css" href="/assets/css/base/typography.css" rel="stylesheet">
+
+   <!-- Base CSS -->
+   <link rel="stylesheet" type="text/css" href="/assets/css/base/base.css" rel="stylesheet">
+
+   <!-- React Dependencies for Main Component-->
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js'></script>
+
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js'></script>
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js'></script>
+
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.6/interact.js'></script>
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/immutable/3.7.6/immutable.js'></script>
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/Faker/3.0.1/faker.js'></script>
+
+   <link rel="stylesheet" type="text/css" href="/assets/css/components/timeline-view-table.css" rel="stylesheet">
+   <script src="https://codepen.io/mariusandra/pen/mPaXjy.js"></script>
+</head>
+
+<body>
+   <!-- Fixed Top -->
+   <nav class="navbar display-5 navbar-expand-md navbar-dark fixed-top bg-dark">
+      <span style="float: left;" class="glyphicon glyphicon-chevron-down pr-1 text-light"></span>
+   </nav>
+   <!-- Fixed Top End -->
+   <main role="main" class="text-center mt-5">
+      @RENDER Body
+   </main>
+   <!-- Main Component JS Settings -->
+   <script type="text/javascript" src="/assets/js/timeline-view-table.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<%#page layout="./local-table.layout" %>
+
+<%
+  // Permission check
+  IF(!UserService():isManager())
+    ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+
+  // get employee by id
+  nBankId := Val( ::params:id )
+  oData := Bank_HolidayModel():findBy( "bank_holiday_id", nBankId )
+  cDate := AllTrim(::params:date)
+
+  IF(!Empty(oData) .AND. !Empty(cDate))
+    // Convert to db format
+    oData:bank_holiday_date := StoD(DateController():formatRawDate(cDate))
+    IF(Bank_HolidayModel():update( nBankId, oData ))
+      ::httpResponse:redirect( "bank-holidays.cxp" )
+      RETURN .T.
+    ENDIF
+  ENDIF
+%>
+
+<!-- Failure -->
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading h1 ">Error: @(Bank_HolidayModel():getLastError())</h4>
+  <p class="h3">Editing bank holiday failed.</p>
+
+  <hr>
+  <p class="mb-4 h4">In case this page don't help, don't hesitate contacting us!</p>
+  <button type="submit" data-action="./bank-holidays.cxp" data-parameter="form:new" class="btn btn-dark">Go
+    back</button>
+</div>

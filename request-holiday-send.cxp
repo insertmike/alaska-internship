@@ -1,0 +1,35 @@
+<%#page layout="./local-table.layout" %>
+<%
+  // Set Up
+  LOCAL nEmpId, cStartDateRaw, cEndDateRaw, cReason
+
+  // Active Session Check
+  IF(!AccountMgmt():isLoggedIn())
+    ::httpResponse:redirect( "login-form.cxp" )
+    RETURN
+  ENDIF
+
+
+ // Get data passed by requeset-holiday.cxp
+ nEmpId := Val(::params:id)
+ cStartDateRaw := AllTrim(::params:start_date)
+ cEndDateRaw := AllTrim(::params:end_date)
+ cReason := AllTrim(::params:reason)
+
+ // Validation inside the requestHoliday function
+ IF(EmployeeModel():requestHoliday(nEmpId, cStartDateRaw, cEndDateRaw, cReason))
+   ::httpResponse:redirect( "my-holidays.cxp" )
+   RETURN
+ ENDIF
+
+%>
+<!-- Failure -->
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading h1 ">Error: @(Employee_Holiday():getLastError())</h4>
+  <p class="h3">Failed sending the request.</p>
+  <p class="mb-2 mt-0">Your request is either empty or you are overflowing the holiday days you have left.</p>
+  <hr>
+  <p class="mb-4 h4">In case this page don't help, don't hesitate contacting us!</p>
+  <button type="submit" data-action="./request-holiday.cxp" data-parameter="form:new" class="btn btn-dark">Go
+    back</button>
+</div>

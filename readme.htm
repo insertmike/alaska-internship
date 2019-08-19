@@ -1,0 +1,105 @@
+<!DOCTYPE HTML >
+
+<html>
+<head>
+<title>Sample/Template readme</title>
+</head>
+<style>
+h1{
+  width:100%;
+  background-color: #298BF0;
+  color: #f7f7ff;
+  padding: 3px;
+  margin-top:0px;
+  padding-top:0px;
+  margin-bottom:10px;
+  font-size:24pt;
+}
+h2{
+  color: #298BF0;
+  font-size:14pt;
+  margin-bottom:0px;
+}
+h2 + p{
+  margin-top:5px;
+  font-size:10pt;
+}
+
+
+h3{
+  color: #ff9720;
+  font-size:10pt;
+  margin-top:0px;
+  margin-bottom:0px;
+  width:10%;
+}
+h3 + p{
+  margin-top:0px;
+  margin-bottom:5px;
+  font-size:10pt;
+  width:70%;
+}
+</style>
+<body bgcolor="#FFFFFF" style="font-family: Verdana, Arial, Helvetica, sans-serif;font-size:10pt;">
+
+<h1>Template: SmallWebApp</h1>
+
+<h2>Summary:</h2>
+<p>
+The Small Web Application template is to be used when you are developing web application
+with dynamic content and interaction but without complex application states such as a shopping cart
+and its checkout process have. Typical candidates of SmallWebApps are HumanResource vacation mgmt,
+Event Calendar or Expense Tracking. Generally spoken SmallWebApps focus on a single Task / Domains,
+but do not implement a multi state workflow.
+</p>
+<h2>Project Targets:</h2>
+<p><b>smallwebapp.web</b> The views of our template implemented as CXP pages</p>
+<p><b>helpers\accountmgmt.dll</b> The business logic, deployed as helper dll which implemented a AccountMgmt() as well UserService() classes as well as a EmployeeModel for data access.</p>
+<p><b>helpers\unit-test\runner.exe</b> The unti test target for the business logic in the helper dlls.</p>
+
+<h2>Rules:</h2>
+<ul>
+<li>Whenever you add business logic to the helper, write unit tests. If you add a new business logic class then
+add at least a new test group to have your test organized.
+</li>
+<li>Do not add business logic to the cxp views, they are just there to have as little logic as possible and bind
+your data / actions to the views or receive view data and forward it to the AccountMgmt and UserService business logic layers which in turn use for data access the employee model.</li>
+</ul>
+
+<h2>Description:</h2>
+<p>The entire sample uses Bootstrap 4 for the UI as well as the following Xbase++ specific features:</p>
+<ul>
+<li>To avoid repeated html coding a site.layout file to define the generic layout of the
+web application. All other views (*.cxp) simple use that layout and this way can can
+concentrate onto content with each view
+</li>
+<li>The application.config file is used in that sample to store application specific config data as well
+as to bind the helper dll to all CXP/LAYOUT files (lib node).</li>
+<li>The login / Logout cxp files are special in that sense as they just do a little control flow logic and initiate a page redirect</li>
+<li>You can find all trace/log output at c:\programdata\alaska software\logfiles\cxp20</li>
+</ul>
+
+<h2>Notes about data management</h2>
+<p>The application uses a PostgreSQL dbms for data storage/management:</p>
+<ul>
+<li>Data is stored in the hr-vacation database.</li>
+<li>The sql script "hr-vacation-model.sql" implements the data model and can be executed via PG admin</li>
+<li>The sql script "hr-vacation-data-sample.sql" inserts default data and can be executed via PG admin</li>
+<li>Access to data is done via a Model-Framework, a simple layer on top of SQL to make data access easier</li>
+<li>Database connection / disconnection is done automatically at application startup/shutdown. For that the
+    AccountMgmt class implements the IAppLifeCycle interface, so onStartup(),onShutdown() are executed automatically.</li>
+</ul>
+
+<h2>Requirements:</h2>
+<ul>
+<li>Xbase++ 2.00.1103 or higher, with CXP installed.</li>
+<li>IIS with FastCGI installed</li>
+<li>PostgreSQL 9.4 or higher, in addition pg admin to do maintenance workl</li>
+</ul>
+
+<h3>Keywords:</h3><p>SmallWebApp, Cloud, CXP, Helpers, Bootstrap, PostgreSQL</p>
+<h3>Author:</h3><p>Alaska Software</p>
+
+
+</body>
+<html>

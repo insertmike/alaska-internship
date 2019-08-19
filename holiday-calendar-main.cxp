@@ -1,0 +1,64 @@
+<%#page layout="./local-table.layout"%>
+
+<%
+  // Permission check
+  IF(!UserService():isManager())
+    ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+
+  oUser := AccountMgmt():getCurrentUser()
+  nEmpId := oUser:employee_id
+  aEmployees := EmployeeModel():all("employee_name")
+%>
+
+<!-- App Wrapper -->
+<div class="boxshadow border border-info p-5 text-center">
+
+  <h1 class="local__table__header"> Holiday Calendar </h1>
+
+
+  <!-- Form start -->
+  <form id="new" action="" method="post">
+    <!-- Datepicker start date -->
+    <div class="form-group">
+      <input id="managerId" name="managerId" type="hidden" value="@(nEmpId)">
+      <label for="holiday_start_date">From: </label> <br>
+      <input id="datepicker_start" class="datepicker form-control" type="text" name="start_date" autocomplete="off"
+        readonly required="required"><i style="position: relative; margin-left: -1.7rem;"
+        class="text-dark glyphicon glyphicon-calendar form-control-feedback"></i>
+    </div>
+    <!-- Datepicker end date -->
+    <div class="form-group">
+      <label for="holiday_end_date">To:</label> <br>
+      <input id="datepicker_end" class="form-control datepicker" type="text" name="end_date" autocomplete="off" readonly
+        required><i style="position: relative; margin-left: -1.7rem;"
+        class="text-dark glyphicon glyphicon-calendar form-control-feedback"></i>
+    </div>
+    <!-- Filter -->
+    <div class="form-group">
+      <p for="empl_select" style="min-width: 120px;"><em>Filter criteria</em></p>
+
+      <select name="empId" id="empl_list" style="min-width: 360px;   required=" required" class="custom-select-sm">
+        <option value="0"> -- All employees -- </option>
+        @FOR n:= 1 TO Len( aEmployees )
+        <option value="@(aEmployees[n]:employee_id)"> @(aEmployees[n]:employee_name)</option>
+        @NEXT
+      </select>
+
+    </div>
+    <!-- Submit -->
+    <div class="form-group pt-3">
+
+      <input class="btn btn-primary btn-md" onclick="changeToListViewActionSubmit()" value="Show list view"
+        data-parameter="form:new">
+      &nbsp;
+      <input class="btn btn-primary btn-md" onclick="changeToGraphViewActionSubmit()" value="Show graphical view"
+        data-parameter="form:new">
+    </div>
+    <!-- Submit -->
+  </form>
+  <!-- Form end -->
+</div>
+<!-- App Wrapper -->
+<!-- JS Required For Submitting the Data -->
+<script type="text/javascript" src="/assets/js/holiday-calendar.js"></script>

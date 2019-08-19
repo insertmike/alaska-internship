@@ -1,0 +1,33 @@
+<%#page layout="./site.layout" %>
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron bg-info mt-5">
+    <div class="container text-center">
+        <h1 class="display-4 mb-5">Welome to the HR Vacation Manager!</h1>
+        <p class=" jumbotron__description bg-dark rounded">A web-based application to help you plan your holidays</p>
+    </div>
+</div>
+<div class="container">
+    <section class="about" id="about">
+
+        <div class="about__feature">
+            <svg class="about__feature__icon">
+                <use xlink:href="assets/images/sprite.svg#icon-high-five"></use>
+            </svg>
+            <h3 class="heading__tertiary">Easy to use</h3>
+            <p class="feature__text">Straightforward, simplified system which will not waste any of your time. Just log
+                in and start using it!</p>
+
+        </div>
+
+        <div class="about__feature">
+            <svg class="about__feature__icon">
+                <use xlink:href="assets/images/sprite.svg#icon-key"></use>
+            </svg>
+            <h3 class="heading__tertiary">Data Secure</h3>
+            <p class="feature__text">We use up-to-date encryption methods to take control and keep all of your data only
+                for you.
+            </p>
+        </div>
+
+    </section>
+</div>

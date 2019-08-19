@@ -1,0 +1,25 @@
+<%#page layout="./local-table.layout" %>
+<%
+// Active Session Check
+  IF(!AccountMgmt():isLoggedIn())
+    ::httpResponse:redirect( "login-form.cxp" )
+    RETURN
+  ENDIF
+
+  // Get data passed
+  nHolidayId := Val( ::params:id )
+  // Retrack request
+  IF(Employee_Holiday():retrackHolidayRequest(nHolidayId))
+   ::httpResponse:redirect( "my-holidays.cxp" )
+  ENDIF
+
+%>
+<!-- Failure -->
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading h1 ">Error: @(Employee_Holiday():getLastError())</h4>
+  <p class="h3">Retracking failed.</p>
+  <p class="mb-2 mt-0">The data was not found, hence retracking failed.</p>
+  <hr>
+  <p class="mb-4 h4">In case this page don't help, don't hesitate contacting us!</p>
+  <button type="submit" data-action="./my-holidays.cxp" data-parameter="form:new" class="btn btn-dark">Go back</button>
+</div>

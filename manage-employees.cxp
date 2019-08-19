@@ -1,0 +1,95 @@
+<%#page layout="./local-table.layout"%>
+
+<div class="wrapper">
+  <%
+  // Permission check
+  IF(!UserService():isManager())
+    ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+
+   // Getting current user
+   oUser := AccountMgmt():getCurrentUser()
+   // Check if there is current session
+  IF(Empty(oUser))
+    ::httpResponse:redirect( "index.cxp" )
+    RETURN
+  ENDIF
+  // Getting current user id
+  nUserId := oUser:employee_id
+  // Getting all employees from DB
+  aEmployees := EmployeeModel():all("employee_name")
+
+%>
+  <h1 class="local__table__header"> Manage Employees </h1>
+  <hr class="customform__fix">
+
+  <!-- Add new employee -->
+  <button class="btn btn-outline-primary mt-3 mb-3" style="float: right;" data-action="/employee-new-form.cxp">
+    Add Employee
+  </button>
+  <!-- App table starts -->
+  <table class="table-hover table-striped local__table" id="example" style="width:100%">
+    <!-- Static header start -->
+    ` <thead>
+      <tr class="pr-3">
+        <th class="th__local__table"> <span class="glyphicon glyphicon-user mr-3"></span>Employee name</th>
+        <th class="th__local__table"><span class="glyphicon glyphicon-envelope mr-3"></span>Email Address</th>
+        <th class="th__local__table"><span class="glyphicon glyphicon-record mr-3"></span>Role</th>
+        <th class="th__local__table"><span class="glyphicon glyphicon-cog mr-3"></span>Edit</th>
+      </tr>
+    </thead>
+    <!-- Static header end -->
+    <!-- Dynamic body start -->
+    <tbody>
+      @FOR n:= 1 TO Len( aEmployees )
+      <tr id="employee_@(aEmployees[n]:employee_id)">
+        <%
+   // Get current iteration user data
+   cEmpName := aEmployees[n]:employee_name
+   cEmpEmail := aEmployees[n]:email
+
+   // Get current integer role and convert it to a string value
+   nEmpRole := aEmployees[n]:employee_role
+   nEmpId := aEmployees[n]:employee_id
+   cEmpRole := ""
+
+   IF(nEmpRole == 1)
+   cEmpRole = "Regular Employee"
+   ELSEIF(nEmpRole == 2)
+   cEmpRole = "Manager"
+   ENDIF
+
+ %>
+        <td class="td__local__table">@(cEmpName)</td>
+        <td class="td__local__table">@(cEmpEmail)</td>
+        <td class="td__local__table">@(cEmpRole)</td>
+        <td class="td__local__table">
+          <button class="btn btn-info btn-sm " data-action="/employee-edit-form.cxp"
+            data-parameter="fields:id='@(AllTrim(Str(nEmpId)))'">
+            <span class="p-2 glyphicon text-white glyphicon-edit"></span>
+          </button>
+
+          <button class="btn btn-danger btn-sm m-1" @(
+            IIF(nUserId==aEmployees[n]:employee_id,"data-confirm='You cannot remove yourself from the system.' ",""))
+                   data-confirm='Confirm deletion of @(cEmpName)?'
+                   data-action=" ./employee-delete.cxp" data-parameter="fields:id='@(AllTrim(Str(nEmpId)))'">
+            <span class="p-2 glyphicon text-white glyphicon-trash"></span>
+          </button>
+
+
+        </td>
+      </tr>
+
+      @NEXT
+
+    </tbody>
+    <!-- Dynamic body end -->
+
+  </table>
+
+
+
+  @SECTION document_ready_scripts
+  $('#example').DataTable( {
+  "ordering": true
+  } );

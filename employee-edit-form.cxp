@@ -1,0 +1,82 @@
+<%#page layout="./local-table.layout"%>
+
+<%
+  // Permission check
+  IF(!UserService():isManager())
+    ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+
+  nEmpId := Val( ::params:id )
+
+  IF(!Empty(nEmpId))
+     oData := EmployeeModel():findBy( "employee_id", nEmpId )
+     cEmpName := oData:employee_name
+     cEmpEmail := oData:email
+     cEmpRole := oData:employee_role
+     nHolidaysPerYear := oData:holidays_per_year
+  ENDIF
+
+%>
+<!-- App Wrapper -->
+<div class="boxshadow border border-info p-5 text-center">
+
+  <h1 class="local__table__header"> Editing <em class="text-info">@(cEmpName)</em></h1>
+
+
+
+  @IF(Empty(oData))
+  <div class="alert alert-primary" role="alert">
+    <h4 class="alert-heading">Data not found or no primary key given</h4>
+    <p> @(EmployeeModel():getLastError()) </p>
+  </div>
+
+  @ELSE
+
+  <!-- Form edit start -->
+  <form id="edit" action="./employee-save.cxp" method="post">
+    <input id="id" name="id" type="hidden" value="@(oData:employee_id)">
+    <!-- Name -->
+    <div class="form-group">
+      <label for="empl_name">Name</label>
+      <input id="empl_name" value="@(cEmpName)" name="name" type="text" required="required"
+        class="form-control form-control-lg text-center">
+    </div>
+    <!-- Email && Password -->
+    <div class="form-group">
+      <label for="empl_email">eMail</label>
+      <input id="empl_email" value="@(cEmpEmail)" name="email" type="email" required="required"
+        class="form-control form-control-lg text-center">
+
+      <label for="empl_pwd">Password</label>
+      <input id="empl_pwd" name="password" type="password" class="form-control form-control-lg text-center">
+    </div>
+    <!-- Vacation days per year -->
+    <div class="form-group">
+      <label for="empl_name">Vacation days per year</label>
+      <input type="number" min="0" max="365" id="holdays_per_year" value="@(nHolidaysPerYear)" name="holidays_per_year"
+        required="required" class="form-control form-control-lg text-center">
+
+    </div>
+    <!-- Role -->
+    <div class="form-group">
+      <label for="empl_role">Role</label>
+      <div>
+        <select id="empl_role" name="role" required="required" class="custom-select-sm">
+          <option value="">Please select</option>
+          <option value="1" @( IIF(cEmpRole==1,"selected",""))>Regular employee</option>
+          <option value="2" @( IIF(cEmpRole==2,"selected",""))>Manager</option>
+        </select>
+      </div>
+    </div>
+    <!-- Submit -->
+    <div class="form-group">
+      <input class="btn btn-outline-primary   btn-md" type="submit" data-action="" value="Save &amp; Exit"
+        data-parameter="form:new">
+      <button class="btn btn-outline-secondary   btn-md" data-action="./manage-employees.cxp">Cancel</button>
+    </div>
+  </form>
+  <!-- Form edit end -->
+  @ENDIF
+
+</div>
+<!-- App Wrapper -->

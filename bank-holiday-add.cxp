@@ -1,0 +1,26 @@
+<%#page layout="./local-table.layout" %>
+<%
+  LOCAL cDate
+
+  // Permission check
+  IF(!UserService():isManager())
+    ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+
+  cDate := AllTrim(::params:date)
+
+  IF(Bank_HolidayModel():addBankHolidayDay(cDate))
+    ::httpResponse:redirect( "bank-holidays.cxp" )
+  ENDIF
+
+%>
+<!-- Failure -->
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading h1 ">Error: @(Bank_HolidayModel():getLastError())</h4>
+  <p class="h3">Adding bank holiday failed.</p>
+  <p class="h3">This date may be already registered.</p>
+  <hr>
+  <p class="mb-4 h4">In case this page don't help, don't hesitate contacting us!</p>
+  <button type="submit" data-action="./bank-holiday-new-form.cxp" data-parameter="form:new" class="btn btn-dark">Go
+    back</button>
+</div>

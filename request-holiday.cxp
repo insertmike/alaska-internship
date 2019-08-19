@@ -1,0 +1,59 @@
+<%#page layout="./local-table.layout"%>
+
+<%
+   // Active Session Check
+  IF(!AccountMgmt():isLoggedIn())
+    ::httpResponse:redirect( "login-form.cxp" )
+    RETURN
+  ENDIF
+
+  // Get current user
+  oUser := AccountMgmt():getCurrentUser()
+%>
+<!-- App Wrapper -->
+<div class="boxshadow border border-info p-5">
+  <h1 class="local__table__header"> Requesting Holiday </h1>
+  <hr class="customform__fix">
+
+  <!-- Form start -->
+  <form action="./request-holiday-send.cxp" method="post">
+    <!-- Datepicker start date -->
+    <div class="form-group datepicker-me">
+      <input id="id" name="id" type="hidden" value="@(oUser:employee_id)">
+      <label for="holiday_start_date">From:<span class="text-danger">*</span></label> <br>
+      <input class="form-control datepicker" type="text" name="start_date" autocomplete="off" readonly
+        required="required" placehoder="Start Date" id="startdate"><i style="position: relative; margin-left: -1.7rem;"
+        class="text-dark glyphicon glyphicon-calendar form-control-feedback"></i>
+      <span id="holiday_start-dateHelpBlock" class="form-text text-muted">Pick start date</span>
+    </div>
+    <!-- Datepicker start date -->
+    <!-- Datepicker end date -->
+    <div class="form-group">
+      <label for="holiday_end_date">To:<span class="text-danger">*</span></label> <br>
+      <input class="form-control datepicker" type="text" name="end_date" autocomplete="off" readonly required
+        placehoder="End Date" id="enddate"><i style="position: relative; margin-left: -1.7rem;"
+        class="text-dark glyphicon glyphicon-calendar form-control-feedback"></i>
+      <span id="holiday_end_date-dateHelpBlock" class="form-text text-muted">Pick end date</span>
+    </div>
+    <!-- Datepicker end date -->
+    <!-- Reason -->
+    <div class="form-group">
+      <label for="holiday_request_reason">Request Reason</label>
+
+      <textarea id="holiday_request_reason" class="form-control form-control-sm" rows="3" cols="60" name="reason">
+
+     </textarea>
+
+    </div>
+    <!-- Reason -->
+    <!-- Submit -->
+    <div class="form-group">
+      <input class="btn btn-primary btn-sm" type="submit" data-action="" value="Request Holiday"
+        data-parameter="form:new">
+    </div>
+    <!-- Submit -->
+  </form>
+  <!-- Form end -->
+
+</div>
+<!-- App Wrapper -->

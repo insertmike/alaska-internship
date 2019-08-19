@@ -1,0 +1,65 @@
+<%#page layout="./local-table.layout"%>
+
+<%
+  // Permission check
+  IF(!UserService():isManager())
+    ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+
+  nBankId := Val(::params:id)
+
+  IF(!Empty(nBankId))
+    oData := Bank_HolidayModel():findBy( "bank_holiday_id", nBankId )
+    date := DtoS(oData:bank_holiday_date)
+    cBankHolidayDate := DateController():formatDbDate(oData:bank_holiday_date)
+  ENDIF
+
+
+
+%>
+
+
+@IF(Empty(oData))
+<!-- Failure -->
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading h1 ">Error: @(Bank_HolidayModel():getLastError())</h4>
+  <p class="h3">Editing bank holiday failed.</p>
+
+  <hr>
+  <p class="mb-4 h4">In case this page don't help, don't hesitate contacting us!</p>
+  <button type="submit" data-action="./bank-holidays.cxp" data-parameter="form:new" class="btn btn-dark">Go
+    back</button>
+</div>
+
+
+@ELSE
+
+<!-- App Wrapper -->
+<div class="boxshadow border border-info p-5 text-center">
+
+  <h2 class="local__table__header"> Editing <em class="text-info">@(cBankHolidayDate)</em></h2>
+  <hr class="customform__fix">
+
+  <!-- Edit Bank Holiday Form Start -->
+  <form id="edit">
+    <input id="id" name="id" type="hidden" value="@(oData:bank_holiday_id)">
+    <!-- Date Datepicker -->
+    <div class="form-group">
+      <input class="form-control datepicker" type="text" name="date" autocomplete="off" id="startdate"><i
+        class="glyphicon-caledar--sm text-dark glyphicon glyphicon-calendar"></i>
+
+
+      <span id="bank_holiday_HelpBlock" class="form-text text-muted text-center">Pick new date</span>
+    </div>
+    <!-- Submit -->
+    <div class="form-group">
+      <button type="submit" class="btn btn-outline-primary   btn-lg" data-action="./bank-holiday-save.cxp"
+        data-parameter="form:edit">Save &amp; Exit</button>&nbsp;
+      <button class="btn btn-outline-secondary   btn-lg" data-action="./bank-holidays.cxp">Cancel</button>
+    </div>
+  </form>
+  <!-- Edit Bank Holiday Form End -->
+  @ENDIF
+
+</div>
+<!-- App Wrapper -->

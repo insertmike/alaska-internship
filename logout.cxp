@@ -1,0 +1,8 @@
+<%#Page trace="yes"%>
+<%
+  AccountMgmt():startup( SELF )
+  AccountMgmt():logout()
+  ::httpResponse:redirect( "index.cxp" )
+%>
+
+

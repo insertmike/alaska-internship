@@ -1,0 +1,47 @@
+<%#page layout="./site.layout" %>
+<%
+    // Permission check
+  IF(!UserService():isRegularEmployee())
+    ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+%>
+
+<!-- App table starts -->
+<table class="table mt-5 table__global">
+  <tbody>
+    <tr class="border border-dark">
+      <td scope="row" class="table__global__menu">
+        <!-- Static Global Table Menu Start -->
+
+        <table class="table table-hover table__primary">
+          <tbody>
+
+            <div id="global__menu">
+              <!-- My Holidays -->
+              <a href="./my-holidays.cxp" target="demo" class="global__menu__link">
+                <p class="global__menu__item ">My holidays</p>
+                <span class="glyphicon glyphicon-chevron-right pr-1 global__menu__chevron-right"></span>
+              </a>
+
+              <!-- Request Holiday -->
+              <a href="./request-holiday.cxp" target="demo" class="global__menu__link">
+                <p class="global__menu__item  ">Request holiday</p>
+                <span class="glyphicon glyphicon-chevron-right pr-1 global__menu__chevron-right"></span>
+              </a>
+
+            </div>
+
+          </tbody>
+        </table>
+        <!-- Static Global Table Menu End -->
+      </td>
+      <td class="table__secondary" style="position:relative;">
+        <!-- Dynamic iframe start -->
+        <iframe name="demo" src="local-table-index.cxp" frameborder="0"
+          style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+        <!-- Dynamic iframe end -->
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- App table end -->

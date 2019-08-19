@@ -1,0 +1,32 @@
+
+------------------------------------------------------------------------------
+ERROR LOG of "C:\smallwebapp\helpers\unit-test\runner.exe" Date: 06/24/2019 18:57:19
+
+Xbase++ version     : Xbase++ (R) Version 2.00.1103
+Operating system    : Windows 10 1803 Build 17134
+------------------------------------------------------------------------------
+oError:args         :
+           -> NIL
+oError:canDefault   : Y
+oError:canRetry     : N
+oError:canSubstitute: Y
+oError:cargo        : NIL
+oError:description  : Session with name(hr-vacation) not found, unable to setup model(Bank_HolidayModel)
+oError:filename     : 
+oError:genCode      :          0
+oError:operation    : BANK_HOLIDAYMODEL:OPEN
+oError:osCode       :          0
+oError:severity     :          2
+oError:subCode      :          0
+oError:subSystem    : MOF
+oError:thread       :          1
+oError:tries        :          0
+------------------------------------------------------------------------------
+CALLSTACK:
+------------------------------------------------------------------------------
+Called from MOFERROR:RAISEPLAINTEXT(126)
+Called from MOFSQLMODEL:BINDSESSION(84)
+Called from BANK_HOLIDAYMODEL:OPEN(38)
+Called from (B)MOFLIFECYCLE:STARTUP(77)
+Called from MOFLIFECYCLE:STARTUP(77)
+Called from INIT: _STARTMOF(21)

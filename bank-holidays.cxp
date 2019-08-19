@@ -1,0 +1,67 @@
+<%#page layout="./local-table.layout"%>
+<%
+  // Permission check
+  IF(!UserService():isManager())
+    ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+
+   // Get all Bank Holidays from DB
+  aBankHolidays := Bank_HolidayModel():all("bank_holiday_date")
+%>
+<div class="wrapper">
+  <h1 class="local__table__header"> Bank Holidays </h1>
+  <hr class="customform__fix">
+
+  <!-- Add new bank holiday -->
+  <button class="btn btn-outline-primary mt-3 mb-3" style="float: right;" data-action="/bank-holiday-new-form.cxp">
+    Add Bank Holiday
+  </button>
+  <!-- App table starts -->
+  <table class="table-hover table-striped mb-3 local__table" id="bank-holidays">
+    <!-- Static header start -->
+    <thead>
+      <tr class="text-center">
+        <th class="th__local__table">
+          <span class="glyphicon glyphicon-calendar mr-3"></span>Date
+        </th>
+        <th class="th__local__table">
+          <span class="glyphicon glyphicon-cog mr-3"></span>Options
+        </th>
+      </tr>
+    </thead>
+    <!-- Static header end -->
+    <!-- Dynamic body start -->
+    <tbody>
+      @FOR n:= 1 TO Len( aBankHolidays )
+      <%
+     nCurrBankId := aBankHolidays[n]:bank_holiday_id
+     cCurrBankDate := DateController():formatDbDate(aBankHolidays[n]:bank_holiday_date)
+   %>
+      <tr id="bank_holiday_@(nCurrBankId)">
+        <td class="td__local__table">@(cCurrBankDate)</td>
+        <td class="td__local__table">
+          <button class="btn btn-info btn-sm " data-action="/bank-holiday-edit-form.cxp"
+            data-parameter="fields:id='@(AllTrim(Str(aBankHolidays[n]:bank_holiday_id)))'">
+            <span class="p-2  glyphicon text-white glyphicon-edit"></span>
+          </button>
+
+          <button class="btn btn-danger btn-sm" data-confirm='Confirm deletion of @(cCurrBankDate)?'
+            data-action="./bank-holiday-delete.cxp"
+            data-parameter="fields:id='@(AllTrim(Str(aBankHolidays[n]:bank_holiday_id))))'">
+            <span class="p-2 glyphicon text-white glyphicon-trash"></span>
+          </button>
+
+
+        </td>
+      </tr>
+      @NEXT
+    </tbody>
+    <!-- Dynamic body end -->
+  </table>
+  <!-- App table end -->
+</div>
+
+@SECTION document_ready_scripts
+$('#bank-holidays').DataTable( {
+"ordering": true
+} );

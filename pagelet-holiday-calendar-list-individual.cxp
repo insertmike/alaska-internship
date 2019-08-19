@@ -1,0 +1,83 @@
+<%#page layout="./local-table.layout" %>
+<%
+LOCAL aHolidays
+
+   // Permission check
+   IF(!UserService():isManager())
+      ::httpResponse:redirect( "login.cxp" )
+   ENDIF
+
+   managerId := Val(::params:managerId)
+
+   IF(!Empty(managerId))
+
+      option := Val( ::params:empId )
+      cStartDateRaw := AllTrim(::params:start_date)
+      cEndDateRaw := AllTrim(::params:end_date)
+
+      IF(!Empty(cStartDateRaw) .AND. !Empty(cEndDateRaw) .AND. !Empty(option))
+         // Getting holidays in the given period
+         aHolidays := Employee_Holiday():findSpecificForPeriod(cStartDateRaw ,  cEndDateRaw, option )
+         oData := EmployeeModel():findBy( "employee_id", option )
+         cEmpName := oData:employee_name
+      ENDIF
+   ENDIF
+%>
+
+@IF(Empty(aHolidays))
+<div class="wrapper  d-flex flex-column align-items-center justify-content-center">
+   <h1 class="h2 mb-5">No data records for this period of time </h1>
+   <button type="submit" data-action="./holiday-calendar-main.cxp" data-parameter="form:new"
+      class="btn btn-lg btn-dark">Go back</button>
+</div>
+@RETURN
+@ENDIF
+<!-- App Wrapper -->
+<div class="wrapper">
+   <h1 class="local__table__header text-center"> Filter: <em style="color: #2196F3">@(cEmpName)</em> </h1>
+   <hr class="customform__fix">
+   <!-- App Table Start -->
+   <table class=" text-center table-hover table-striped local__table" id="holiday-calendar-individual">
+      <!-- Static Header Start -->
+      <thead>
+         <tr>
+            <th class="th__local__table"><span class="glyphicon glyphicon-user mr-3"></span>Employee</th>
+            <th class="th__local__table"><span class="glyphicon glyphicon-calendar mr-3"></span>From</th>
+            <th class="th__local__table"><span class="glyphicon glyphicon-calendar mr-3"></span>To</th>
+            <th class="th__local__table"><span class="glyphicon glyphicon-info-sign  mr-3"></span></th>
+         </tr>
+      </thead>
+      <!-- Static Header End -->
+      <!-- Dynamic Body Start -->
+      <tbody>
+         @FOR n:= 1 TO Len( aHolidays )
+         <tr id="holidays_@(aHolidays[n][1])">
+            <%
+             // Current iteration set up
+             nEmpId := aHolidays[n][2]
+             oData := EmployeeModel():findBy( "employee_id", nEmpId )
+             cEmpName := oData:employee_name
+             cStartDate :=  DateController():formatDbDate(aHolidays[n][3])
+             cEndDate := DateController():formatDbDate(aHolidays[n][4])
+             cReason := aHolidays[n][5]
+            %>
+            <td class="td__local__table">@(cEmpName)</td>
+            <td class="td__local__table">@(cStartDate)</td>
+            <td class="td__local__table">@(cEndDate)</td>
+            <td class="td__local__table">@(IIF(Empty(cReason), "-", cReason))</td>
+
+         </tr>
+         @NEXT
+      </tbody>
+      <!-- Dynamic Body End -->
+   </table>
+   <!-- App Table End -->
+   <button onclick="location.href='./holiday-calendar-main.cxp';" class="btn btn-lg btn-dark align-self-center mt-5">Go
+      back</button>
+</div>
+<!-- App Wrapper -->
+
+@SECTION document_ready_scripts
+$('#holiday-calendar-individual').DataTable( {
+"ordering": true
+} );

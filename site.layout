@@ -1,0 +1,173 @@
+<%#PAGE trace="yes"%>
+<%
+  // This forces IE to be out of compatiblity mode (edge=latest release)
+  ::HttpResponse:AddHeader("X-UA-Compatible","IE=edge,chrome=1")
+
+%>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Mihail Yonchev">
+    <link rel="icon" href="/assets/favicon.ico">
+
+    <title>HR Vacation App</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/.assets/bootstrap-4-1-3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/.assets/fontawesome-free-5.5.0-web/css/all.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/jumbotron.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/css/components/login.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/css/components/index.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/css/base/typography.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/css/base/base.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/css/components/user-panel.css" rel="stylesheet">
+    <!-- Data tables styles -->
+    <link rel="stylesheet" type="text/css" href="/.assets/datatables-1-10-18/datatables.min.css">
+    </script>
+    <link rel="stylesheet" type="text/css" href="/assets/css/components/tables.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <header>
+        <!-- Bootstrap Navigation -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container">
+                <a class="navbar-brand border border-light pl-2 pr-2"
+                    href="/index.cxp">@(::application:config:info:title)</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/index.cxp">Home</a>
+                        </li>
+                        <li class="navbar-nav">
+                            <a class="nav-link" href="/about.cxp">About</a>
+                        </li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        @IF !AccountMgmt():isLoggedIn()
+                        <li class="nav-item"><a class="nav-link" href="/login-form.cxp"><span
+                                    class="fas fa-sign-in-alt">&nbsp;</span>Login</a></li>
+                        @ELSE
+                        <%
+
+  oUser := AccountMgmt():getCurrentUser()
+  IF(Empty(oUser))
+    ::httpResponse:redirect( "index.cxp" )
+    RETURN
+  ELSE
+  nEmpId := oUser:employee_id
+  cEmpRole := UserService():getUserRole(nEmpId)
+  cUserEmail := oUser:email
+   IF(cEmpRole == "Regular Employee")
+     cRef := "/employee-panel.cxp"
+  ENDIF
+  IF(cEmpRole == "Manager")
+    cRef := "/manager-panel.cxp"
+  ENDIF
+ENDIF
+
+%>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="navDropDownLink" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <img src="/assets/images/user-1.png" class="rounded-circle">
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navDropDownLink">
+                                <a class="dropdown-item" href="@(cRef)">Vacation Manager</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#resetPassword">Change Password</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/logout.cxp">Logout</a>
+                            </div>
+                        </li>
+                        @ENDIF
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main">
+        <div id="app-area" class="container">
+            @RENDER Body
+            <hr>
+        </div>
+    </main>
+
+
+    <footer class="container">
+        <p>&copy; @(::application:config:info:copyright + Str(Year(Date())))</p>
+    </footer>
+    @IF AccountMgmt():isLoggedIn()
+    <!-- Reset Password Modal -->
+    <div class="modal fade" id="resetPassword" tabindex="-1" role="dialog" aria-labelledby="resetPasswordLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePassword">Change Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="needs-validation">
+                        <div class="form-group">
+                            <input type="hidden" class="form-control form-control-sm" id="user-email" name="email"
+                                value="@(cUserEmail)" required>
+                            <label for="user-current-password" class="col-form-label">Current Password:</label>
+                            <input type="password" class="form-control form-control-sm" id="user-current-password"
+                                name="currPassword" aria-describedby="user_currPasswordHelpBlock" required>
+                            <span id="user_currPasswordHelpBlock" class="form-text text-muted">Enter your current
+                                password</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-new-password" class="col-form-label">New Password:</label>
+                            <input type="password"
+                                pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                                placeholder="Pattern: UpperCase, LowerCase and Number/Special Char "
+                                class="form-control form-control-sm" id="user-new-password" name="newPassword"
+                                aria-describedby="user_newPasswordHelpBlock" required>
+                            <span id="user_newPasswordHelpBlock" class="form-text text-muted">Enter desired new
+                                password. Minimum 8 characters.</span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" formaction="./change-password.cxp" data-action="./change-password.cxp"
+                                data-parameter="form:new" class="btn btn-primary"></input>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+                @ENDIF
+                <!-- Bootstrap core JavaScript
+                ================================================== -->
+                <!-- Placed at the end of the document so the pages load faster -->
+                <script src="/.assets/jquery/jquery-3.3.1.min.js"></script>
+                <script src="/.assets/alaska-software/alaska-software.webui.js"></script>
+                <script src="/.assets/popper.js/popper.min.js"></script>
+                <script src="/.assets/bootstrap-4-1-3/js/bootstrap.min.js"></script>
+                <script type="text/javascript" src="/.assets/datatables-1-10-18/datatables.min.js"></script>
+                <script>
+                    $(document).ready(function () {
+                        webuiInitialize();
+                        @IF::hasSection("document_ready_scripts")
+                        @RENDER document_ready_scripts
+                        @ENDIF
+                    });
+                </script>
+
+</body>
+
+</html>

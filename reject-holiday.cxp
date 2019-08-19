@@ -1,0 +1,25 @@
+<%
+   // Permission check
+   IF(!UserService:isManager())
+     ::httpResponse:redirect( "login.cxp" )
+   ENDIF
+
+   // Get Id Passed
+   nHolidayId := Val( ::params:id )
+   // Try rejecting the holiday
+   IF(Employee_Holiday():rejectHoliday( nHolidayId ) )
+    // If validated return true and redirect
+    ::httpResponse:redirect( "holiday-requests.cxp" )
+    RETURN .T.
+   ENDIF
+%>
+<!-- Failure -->
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading h1 ">Error: @(Employee_Holiday():getLastError())</h4>
+  <p class="h3">Rejecting request failed.</p>
+
+  <hr>
+  <p class="mb-4 h4">In case this page don't help, don't hesitate contacting us!</p>
+  <button type="submit" data-action="./holiday-requests.cxp" data-parameter="form:new" class="btn btn-dark">Go
+    back</button>
+</div>

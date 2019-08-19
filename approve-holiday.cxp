@@ -1,0 +1,27 @@
+<%#page layout="./site.layout" %>
+<%
+  // Permission check
+  IF(!UserService():isManager())
+   ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+
+  nHolidayId := Val( ::params:id )
+
+  IF(EmployeeModel():approveHolidayRequest(nHolidayId))
+   ::httpResponse:redirect( "holiday-requests.cxp" )
+   RETURN .T.
+  ENDIF
+
+%>
+<!-- Failure -->
+<div class="wrapper mt-5 text-center">
+  <div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading h1 ">Error: @(Employee_Holiday():getLastError())</h4>
+    <p class="h3">Approving request failed.</p>
+    <p class="mb-2 mt-0">The data was not found.</p>
+    <hr>
+    <p class="mb-4 h4">In case this page don't help, don't hesitate contacting us!</p>
+    <button type="submit" data-action="./holiday-requests.cxp" data-parameter="form:new" class="btn btn-dark">Go
+      back</button>
+  </div>
+</div>

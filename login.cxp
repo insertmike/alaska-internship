@@ -1,0 +1,43 @@
+<%#Page trace="yes"%>
+
+<%
+  // Get data passed
+  cEMail    := AllTrim(::params:email)
+  cPassword := AllTrim(::params:password)
+
+  cError := AccountMgmt():login( cEMail, cPassword )
+
+  // error==failed, render login form agoin with error
+  IF !Empty(cError)
+    ::session:errorMessage := cError
+    ::HttpResponse:redirect( "/login-form.cxp" )
+  ENDIF
+
+  // no referer take default
+  IF Empty(::Session:Referer)
+    cRef := "/index.cxp"
+  ELSE
+
+
+   oUser := AccountMgmt():getCurrentUser()
+  IF(Empty(oUser))
+    ::httpResponse:redirect( "index.cxp" )
+    RETURN
+  ENDIF
+  // Define user id
+  nEmpId := oUser:employee_id
+  // Get user role
+  userRole := UserService():getUserRole(nEmpId)
+
+  // Set Reference Link for each type
+  IF(userRole == "Regular Employee")
+     cRef := "/employee-panel.cxp"
+  ENDIF
+  IF(userRole == "Manager")
+    cRef := "/manager-panel.cxp"
+  ENDIF
+// Session close
+ENDIF
+  // Redirect based on type of user
+  ::HttpResponse:redirect( cRef )
+%>

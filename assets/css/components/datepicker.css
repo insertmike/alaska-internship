@@ -1,0 +1,9 @@
+.datepicker{
+    width: 20rem;
+    display: inline-block;
+}
+
+   .glyphicon-caledar--sm{
+    position: relative;
+    margin-left: -1.7rem;
+ }

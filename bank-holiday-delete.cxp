@@ -1,0 +1,26 @@
+<%#page layout="./site.layout" %>
+
+<%
+  // Permission check
+  IF(!UserService():isManager())
+    ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+
+  // get bank holiday id
+  nBankId := Val( ::params:id )
+
+  IF(Bank_HolidayModel():delete( nBankId ))
+    ::httpResponse:redirect( "bank-holidays.cxp" )
+    RETURN .T.
+  ENDIF
+%>
+<!-- Failure -->
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading h1 ">Error: @(Bank_HolidayModel():getLastError())</h4>
+  <p class="h3">Deleting bank holiday failed.</p>
+
+  <hr>
+  <p class="mb-4 h4">In case this page don't help, don't hesitate contacting us!</p>
+  <button type="submit" data-action="./bank-holidays.cxp" data-parameter="form:new" class="btn btn-dark">Go
+    back</button>
+</div>

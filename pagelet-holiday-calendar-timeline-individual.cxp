@@ -1,0 +1,85 @@
+ <%#page layout="./local-table-timeline-view.layout"%>
+<%
+   // Permission check
+   IF(!UserService():isManager())
+    ::httpResponse:redirect( "login.cxp" )
+   ENDIF
+
+   aHolidays := ""
+   managerId := Val(::params:managerId)
+   option := Val(::params:empId)
+   cStartDateRaw := AllTrim(::params:start_date)
+   cEndDateRaw := AllTrim(::params:end_date)
+   IF(!Empty(cStartDateRaw) .AND. !Empty(cEndDateRaw) .AND. !Empty(option))
+      // Getting holidays in the given period
+      aHolidays := Employee_Holiday():findSpecificForPeriod(cStartDateRaw ,  cEndDateRaw, option )
+      oData := EmployeeModel():findBy( "employee_id", option )
+      cEmpName := oData:employee_name
+   ENDIF
+
+%>
+
+@IF(Empty(aHolidays))
+   <div class="wrapper d-flex flex-column align-items-center justify-content-center">
+   <h1 class="h2 mb-5"> No data records for this period of time </h1>
+     <button  onclick="location.href='./holiday-calendar-main.cxp';" class="btn btn-lg btn-dark align-self-center mt-5">Go back</button>
+   </div>
+   @RETURN
+@ENDIF
+<!-- Data accessed by the JS -->
+<span id="startDate" hidden>"@(cStartDateRaw)"</span>
+<span id="endDate" hidden>"@(cEndDateRaw)"</span>
+<span id="dataLength" hidden>@(Len(aHolidays))</span>
+
+
+<!-- App Wrapper -->
+ <div class="wrapper mt-5 md-flex flex-column justify-content-center">
+   <h1 class="local__table__header text-center"> Filter: <em style="color: #2196F3">@(cEmpName)</em> </h1>
+   <hr class="customform__fix">
+<!-- App Table Start -->
+<!-- Main Component -->
+  <div id="main" style="text-align: center; overflow: hidden;"></div>
+<!-- Main Component -->
+  <button  onclick="location.href='./holiday-calendar-main.cxp';" class="btn btn-lg btn-dark align-self-center mt-5">Go back</button>
+</div>
+<!-- App Table End -->
+
+
+<script>
+var groups = [];
+
+var items = [];
+
+@FOR n:= 1 TO Len( aHolidays )
+<%
+   currStartDate := DateController():dbDateToJsDate( DtoS(aHolidays[n][3]) )
+   currEndDate := DateController():dbDateToJsDate( DtoS(aHolidays[n][4]) )
+%>
+
+
+  var emp = {
+  id: '@(n)',
+  title: '@(cEmpName)'
+ }
+   groups.push(emp)
+
+  var obj = {
+      id: '@(n)',
+      group: '@(n)',
+      title: '@(cEmpName)',
+      start: new Date('@(currStartDate)') ,
+      end: new Date('@(currEndDate)')
+   }
+ items.push(obj);
+
+@NEXT
+ </script>
+
+
+
+
+
+
+
+
+

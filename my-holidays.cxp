@@ -1,0 +1,72 @@
+<%#page layout="./local-table.layout"%>
+
+<%
+// Active Session Check
+  IF(!AccountMgmt():isLoggedIn())
+    ::httpResponse:redirect( "login-form.cxp" )
+    RETURN
+  ENDIF
+
+  // Get current user
+   oUser := AccountMgmt():getCurrentUser()
+  // Get current user Id
+  uId := oUser:employee_id
+
+  // Get all matches of current user id from Employee_Holiday Table
+  aHolidayRequests := Employee_Holiday():findAllBy( "employee_id", uId )
+  %>
+<div class="wrapper">
+  <h1 class="local__table__header"> My Holidays </h1>
+  <hr class="customform__fix">
+
+  <!-- App table starts -->
+  <table class="table-hover table-striped local__table" id="my-holidays">
+    <!-- Static header start -->
+    <thead>
+      <tr class="tr__local__table p-5">
+        <th class="th__local__table"><span class="glyphicon glyphicon-calendar mr-3"></span>From</th>
+        <th class="th__local__table"><span class="glyphicon glyphicon-calendar mr-3"></span>To</th>
+        <th class="th__local__table"><span class="glyphicon glyphicon-info-sign mr-3"></th>
+        <th class="th__local__table"><span class="glyphicon glyphicon-flag mr-3"></th>
+        <th class="th__local__table"><span class="glyphicon glyphicon-cog mr-3"></th>
+      </tr>
+    </thead>
+    <!-- Static header end -->
+    <!-- Dynamic body start -->
+    <tbody>
+      @FOR n:= 1 TO Len( aHolidayRequests )
+      <%
+      cStartDate := DateController():formatDbDate(aHolidayRequests[n]:start_date)
+      cEndDate := DateController():formatDbDate(aHolidayRequests[n]:end_date)
+      cReason := aHolidayRequests[n]:reason
+   %>
+      <tr id="employee_holiday_@(aHolidayRequests[n]:employee_holiday_id)">
+        <td class="td__local__table">@(cStartDate)</td>
+        <td class="td__local__table">@(cEndDate)</td>
+        <td class="td__local__table">@( IIF(!Empty(cReason),cReason,"-"))</td>
+        @( IIF(aHolidayRequests[n]:resolution == 0,"<td class='text-warning'>Pending</td>",""))
+        @( IIF(aHolidayRequests[n]:resolution == 1,"<td class='text-success'>Approved</td>",""))
+        @( IIF(aHolidayRequests[n]:resolution == -1,"<td class='text-danger'>Rejected</td>",""))
+
+        @IF(aHolidayRequests[n]:resolution == 0)
+        <td> <button data-confirm="Are you shure?" data-action="./retrack-request.cxp"
+            data-parameter="fields:id='@(AllTrim(Str(aHolidayRequests[n]:employee_holiday_id)))'" type="submit"
+            class="btn btn-info ">Retrack</button></td>
+        @ELSE
+
+        <td> <button disabled type="submit" class="btn btn-muted">Retrack</button></td>
+        @ENDIF
+      </tr>
+      @NEXT
+
+
+    </tbody>
+    <!-- Dynamic body end -->
+  </table>
+  <!-- App table ends -->
+</div>
+
+@SECTION document_ready_scripts
+$('#my-holidays').DataTable( {
+"ordering": true
+} );

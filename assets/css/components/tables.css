@@ -1,0 +1,52 @@
+.table__global{
+box-shadow: .1rem .1rem 1rem black;
+height: 85vh !important;
+}
+.table__global__menu{
+padding: 0 !important;
+border-right: 1px solid #dee2e6;
+width: 20vw;
+}
+.global__menu__link{
+color: inherit;
+width: 100%;
+height: 100%;
+}
+.global__menu__link:hover,
+.global__menu__link:visited,
+.global__menu__link:link,
+.global__menu__link:active{
+text-decoration: none;
+}
+.table__global td{
+ border-top: none !important;
+ border-bottom: 1px solid #dee2e6 !important;
+}
+.table__global tbody tr{
+min-height: 100%;
+}
+
+.local__table{
+  border-collapse: collapse;
+  box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.1);
+  width:100%;
+  margin-bottom: .8rem;
+}
+
+.th__local__table{
+    font-weight:100;
+    color: white;
+    background-color: #343a40;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+ .th__local__table, .td__local__table {
+   padding:1rem !important;
+
+ }
+  .th__local__table, .td__local__table--small {
+   padding:.5rem !important;
+
+ }
+

@@ -1,0 +1,39 @@
+<%#page layout="./site.layout" %>
+
+<%
+  // Permission check
+  IF(!UserService():isManager())
+    ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+
+  // get employee by id
+  nEmpId := Val( ::params:id )
+  oData := EmployeeModel():findBy( "employee_id", nEmpId )
+  // Check wheter employee exists
+  IF(!Empty(oData))
+    // Update details with passed details TODO -> Check if there is empty details passed. If so -> DON'T UPDATE THEM
+    oData:employee_name := AllTrim(::params:name)
+    oData:email         := AllTrim(::params:email)
+    oData:employee_role := Val( ::params:role )
+    oData:holidays_per_year := VAL(::params:holidays_per_year)
+    // Do not update password if there is no passed one | Other fields are required
+    IF(!Empty(AllTrim(::params:password)))
+    oData:password      := AllTrim(::params:password)
+    ENDIF
+
+    IF(EmployeeModel():update( nEmpId, oData ))
+       ::httpResponse:redirect( "manage-employees.cxp" )
+       RETURN .T.
+    ENDIF
+  ENDIF
+%>
+<!-- Failure -->
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading h1 ">Error: @(EmployeeModel():getLastError())</h4>
+  <p class="h3">Updating employee data failed.</p>
+
+  <hr>
+  <p class="mb-4 h4">In case this page don't help, don't hesitate contacting us!</p>
+  <button type="submit" data-action="./manage-employees.cxp" data-parameter="form:new" class="btn btn-dark">Go
+    back</button>
+</div>

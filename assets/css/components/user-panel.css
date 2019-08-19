@@ -1,0 +1,43 @@
+.user__panel{
+   display:flex;
+   flex-direction: row;
+   align-items: center;
+
+}
+
+#global__menu{
+ height: 100%;
+ display:flex;
+ flex-direction: column;
+ align-items: center;
+ font-size: 1.8rem;
+ font-family: 'Lato';
+}
+
+#global__menu a:hover{
+font-size: 2rem;
+}
+
+#global__menu a{
+   text-align: center;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   position: relative;
+   transition: all .4s;
+}
+
+#global__menu a:not(:first-child){
+   border-top: 1px solid;
+}
+.global__menu__item{
+ flex: 1;
+ padding: 0!important;
+ margin: 0!important;
+ z-index: 1;
+ color: inherit !important;
+ }
+
+
+
+

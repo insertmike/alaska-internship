@@ -1,0 +1,61 @@
+<%#page layout="./local-table.layout"%>
+
+<%
+  // Permission check
+  IF(!UserService():isManager())
+    ::httpResponse:redirect( "login.cxp" )
+  ENDIF
+
+  oData := EmployeeModel():default()
+%>
+
+<!-- App Wrapper -->
+<div class="boxshadow border border-info p-5">
+   <h2 class="local__table__header"> Adding New Employee </h2>
+   <hr class="customform__fix">
+   <!-- New Employee Form Start -->
+   <form id="new" action="./employee-add.cxp" method="post">
+      <!-- Name -->
+      <div class="form-group">
+         <label for="empl_name">Name<span class="text-danger">*</span></label>
+         <input id="empl_name" name="name" type="text" required class="form-control form-control-md text-center">
+      </div>
+      <!-- Email -->
+      <div class="form-group">
+         <label for="empl_email">Email<span class="text-danger">*</span></label>
+         <input id="empl_email" name="email" type="email" required="true"
+            class="form-control form-control-m text-center">
+      </div>
+      <!-- Role -->
+      <div class="form-group">
+         <label class="d-block" for="empl_role">Role<span class="text-danger">*</span></label>
+         <select id="empl_role" name="role" required="true" class="custom-select-md">
+            <option value="">Please select</option>
+            <option value="1">Regular employee</option>
+            <option value="2">Manager</option>
+         </select>
+      </div>
+      <!-- Vacation Per Year -->
+      <div class="form-group">
+         <label for="empl_name">Vacation days per year<span class="text-danger">*</span></label>
+         <input type="number" min="0" max="365" id="holdays_per_year" required="true" name="holdays_per_year"
+            class="form-control form-control-ld text-center">
+      </div>
+      <!-- Password -->
+      <div class="form-group">
+         <label class="d-block" for="empl_pwd">Password</label>
+         <input id="empl_pwd" placeholder="UpperCase, LowerCase and Number or Spec char"
+            pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" name="password" type="password"
+            class="form-control form-control-lg text-center">
+         <span id="empl_pwdHelpBlock" class="form-text text-muted text-center">Minimum length: 8</span>
+
+      </div>
+      <div class="form-group">
+         <input class="btn btn-outline-primary   btn-lg" type="submit" data-action="./employee-add.cxp"
+            value="Add &amp; Exit" data-parameter="form:new">
+         <button class="btn btn-outline-secondary   btn-lg" data-action="./manage-employees.cxp">Cancel</button>
+      </div>
+   </form>
+   <!-- New Employee Form End -->
+</div>
+<!-- App Wrapper -->
