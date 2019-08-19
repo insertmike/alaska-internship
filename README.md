@@ -1,4 +1,4 @@
-# Alaska Software Internship
+# Alaska Software Internship :clipboard:	
 This report details about my Summer Internship for `Alaska Software` via `V&U LTD`.
 
 *Started Project:*  1 Jun 2019
@@ -6,10 +6,20 @@ This report details about my Summer Internship for `Alaska Software` via `V&U LT
 *Finished Project:* 16 July 2019
 
 *Project Evaluation:* 16-18 July 2019
+
 ## General Description
 *HR Vacation* is a web-based application used by employees and managers in a company to easy manage their holidays.
+
 ### Business Case for the Product
 This product is designed to help companies keeping track of requested and approved vacancy days as well as to manage the vacation requests and approval process.
+
+
+   <p align="center">
+      
+   <img src="https://user-images.githubusercontent.com/45242072/63298575-700cee00-c2dc-11e9-86de-afdee31ed174.png" alt="Hr Vacation Home Page" width="820" height="500">
+      
+   </p>
+
 ## Product Overview
 **Programming Languages:** *xBase++*, *PostgreSQL* ,*Javascript*, *CSS*, *Bootstrap*
 
@@ -27,8 +37,8 @@ There is two roles in the system:
    - Can manipulate employees (*add/edit/delete*).
    - Can add/retrack a new holiday request.
 2. **Regular Employee**
- - Can see a list of his requested holidays.
- - Can add/retrack a new holiday request.
+   - Can see a list of his requested holidays.
+   - Can add/retrack a new holiday request.
 
 ### Product Functions
 The product have the following pages and functuonalties:
@@ -39,34 +49,34 @@ The product have the following pages and functuonalties:
    - The user can request a password reset. A new password is generated and sent to the user per email.
    - The new password hash is calculated.
 2. **Main Page**
- - According to the role of the user main page is loading in employee or manager view.
- - The user have way to change his current password.
- - The user can log out of the system.
+   - According to the role of the user main page is loading in employee or manager view.
+   - The user have way to change his current password.
+   - The user can log out of the system.
 3. **Employee - Holidays Overview**
- - The user sees all the requests he did make for a holiday with indicated status of the request.
- - The user can retrack back a request with is still in status requested.
+   - The user sees all the requests he did make for a holiday with indicated status of the request.
+   - The user can retrack back a request with is still in status requested.
 4. **Employee - Holiday Request**
- - The user have a way to enter first and last day as well as descriptive reason for the requested holiday.
- - The requested days are validated, toward the total number of vacation days the employee may use per year.
- - When calculating the requested days, the weekend and bank holidays are taken into account.
+   - The user have a way to enter first and last day as well as descriptive reason for the requested holiday.
+   - The requested days are validated, toward the total number of vacation days the employee may use per year.
+   - When calculating the requested days, the weekend and bank holidays are taken into account.
 5. **Manager - Holiday Requests Overview**
- - The user sees a list of the requested holidays and can accept or reject them.
- - The user have an option to see if there is any overlapping approved requests for a pending request.
- - There is restriction that managers are not allowed to approve their own holiday requests.
+   - The user sees a list of the requested holidays and can accept or reject them.
+   - The user have an option to see if there is any overlapping approved requests for a pending request.
+   - There is restriction that managers are not allowed to approve their own holiday requests.
  
 6. ** Manager - Company Holiday Calendar******
- - The user is requested to enter filter criteria for visualization and to select the type of view to be displayed.
- - By defaut the time range is set to one month period.
- - If *list view* is selected, the user sees a table of the approved holidays, sorted by start date.
- - If *graphical view* is selected, the information is displayed as timeline view ( *Implemented with React JS* ).
+   - The user is requested to enter filter criteria for visualization and to select the type of view to be displayed.
+   - By defaut the time range is set to one month period.
+   - If *list view* is selected, the user sees a table of the approved holidays, sorted by start date.
+   - If *graphical view* is selected, the information is displayed as timeline view ( *Implemented with React JS* ).
 7. **Manager - Manage Employees**
- - The user sees a list of existing employees and can edit their data or delete an employee.
- - The user can add new employees by entering their name, role (manager or employee), number of vacation days per year, email adress and a password to use the system.
- - A random PasswordSalt value is generated for every data record.
- - The password hash will be calculated using the salted string.
- - There is pattern set to every input field.
+   - The user sees a list of existing employees and can edit their data or delete an employee.
+   - The user can add new employees by entering their name, role (manager or employee), number of vacation days per year, email adress and a password to use the system.
+   - A random PasswordSalt value is generated for every data record.
+   - The password hash will be calculated using the salted string.
+   - There is pattern set to every input field.
 8. Manager - Bank Holidays
- - The manager sees a list of bank holidays and can manipulate them *(add/edit/delete)*.
+   - The manager sees a list of bank holidays and can manipulate them *(add/edit/delete)*.
 
 ### Data validation 
 The used controls ensure that the entered data is of a proper type.
