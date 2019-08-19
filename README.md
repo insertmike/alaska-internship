@@ -48,35 +48,61 @@ The product have the following pages and functuonalties:
    - The password hash is calculated using a specific salted string, stored in the database.
    - The user can request a password reset. A new password is generated and sent to the user per email.
    - The new password hash is calculated.
+
+        <img src="https://user-images.githubusercontent.com/45242072/63299599-d6930b80-c2de-11e9-8da4-83329d318b9e.png" alt="Hr Vacation Login Screen" >
+      
+
+   
+   
+
 2. **Main Page**
    - According to the role of the user main page is loading in employee or manager view.
    - The user have way to change his current password.
    - The user can log out of the system.
-3. **Employee - Holidays Overview**
+
+![main-page](https://user-images.githubusercontent.com/45242072/63299910-954f2b80-c2df-11e9-8929-8442222fa2c8.png)
+
+3. **Employee, Manager - Holidays Overview**
    - The user sees all the requests he did make for a holiday with indicated status of the request.
    - The user can retrack back a request with is still in status requested.
-4. **Employee - Holiday Request**
+
+![my-holidays](https://user-images.githubusercontent.com/45242072/63300495-03482280-c2e1-11e9-9fd2-aea5028eebc5.png)
+
+4. **Employee, Manager - Holiday Request**
    - The user have a way to enter first and last day as well as descriptive reason for the requested holiday.
    - The requested days are validated, toward the total number of vacation days the employee may use per year.
    - When calculating the requested days, the weekend and bank holidays are taken into account.
+
+![request-holiday](https://user-images.githubusercontent.com/45242072/63300497-03482280-c2e1-11e9-8950-bcfe96743df2.png)
+
 5. **Manager - Holiday Requests Overview**
    - The user sees a list of the requested holidays and can accept or reject them.
    - The user have an option to see if there is any overlapping approved requests for a pending request.
    - There is restriction that managers are not allowed to approve their own holiday requests.
  
-6. ** Manager - Company Holiday Calendar******
+ ![holiday-requests](https://user-images.githubusercontent.com/45242072/63300486-017e5f00-c2e1-11e9-9895-ee20e873b7a3.png)
+ 
+6. **Manager - Company Holiday Calendar**
    - The user is requested to enter filter criteria for visualization and to select the type of view to be displayed.
    - By defaut the time range is set to one month period.
    - If *list view* is selected, the user sees a table of the approved holidays, sorted by start date.
    - If *graphical view* is selected, the information is displayed as timeline view ( *Implemented with React JS* ).
+
+![holiday-calendar](https://user-images.githubusercontent.com/45242072/63300485-017e5f00-c2e1-11e9-87b2-b3f2d47b96f2.png)
+
 7. **Manager - Manage Employees**
    - The user sees a list of existing employees and can edit their data or delete an employee.
    - The user can add new employees by entering their name, role (manager or employee), number of vacation days per year, email adress and a password to use the system.
    - A random PasswordSalt value is generated for every data record.
    - The password hash will be calculated using the salted string.
    - There is pattern set to every input field.
-8. Manager - Bank Holidays
+   
+![manage-employees](https://user-images.githubusercontent.com/45242072/63300494-03482280-c2e1-11e9-9668-fbec3b1be4f1.png)
+
+8. **Manager - Bank Holidays**
    - The manager sees a list of bank holidays and can manipulate them *(add/edit/delete)*.
+
+![bank-holidays](https://user-images.githubusercontent.com/45242072/63300484-017e5f00-c2e1-11e9-9c0e-97978244db72.png)
 
 ### Data validation 
 The used controls ensure that the entered data is of a proper type.
