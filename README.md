@@ -2,7 +2,9 @@
 This report details about my Summer Internship for `Alaska Software` via `V&U LTD`.
 
 *Started Project:*  1 Jun 2019
+
 *Finished Project:* 16 July 2019
+
 *Project Evaluation:* 16-18 July 2019
 ## General Description
 *HR Vacation* is a web-based application used by employees and managers in a company to easy manage their holidays.
