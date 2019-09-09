@@ -44,7 +44,7 @@ CLASS UserService
 
   CLASS METHOD isManager()
   CLASS METHOD isRegularEmployee()
-
+  CLASS METHOD getUserPanelRef()
 ENDCLASS
 
 
@@ -175,6 +175,36 @@ RETURN .F.
 
 
 /// ------ EXPORTED METHODS ------
+
+///
+/// /// <summary>
+///  Based on current user role, returns reference link to his panel
+/// </summary>
+/// <remarks>
+///  This function is used for go back buttons
+/// </remarks>
+/// <returns> cRef ( Panel Reference Link ) / cRef ( Login Page Reference Link ) </returns>
+CLASS METHOD UserService:getUserPanelRef()
+  LOCAL oUser, cRef, nEmpId,cUserRole
+
+  oUser := AccountMgmt():getCurrentUser()
+  nEmpId := oUser:employee_id
+  cUserRole := ::getUserRole(nEmpId)
+
+  // Edge case value, if no user logged in
+  cRef := "/login.cxp"
+
+  IF(cUserRole == "Regular Employee")
+     cRef := "/employee-panel.cxp"
+     RETURN cRef
+  ENDIF
+
+  IF(cUserRole == "Manager")
+    cRef := "/manager-panel.cxp"
+    RETURN cRef
+  ENDIF
+
+RETURN cRef
 
 ///
 /// /// <summary>
