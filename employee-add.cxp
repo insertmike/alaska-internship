@@ -2,35 +2,21 @@
 
 <%
 
+   IF(!UserService():isManager())
+      ::httpResponse:redirect( "login.cxp" )
+   ENDIF
 
-// Set up
-LOCAL oData, cEmpName, cEmpEmail, cEmpRole, nEmpHolidaysPerYear, cSuggestedSolution
-  // Permission check
-IF(!UserService():isManager())
-  ::httpResponse:redirect( "login.cxp" )
-ENDIF
-
-  // Create a new instance of Employee
   oData := EmployeeModel():default()
 
   // Retrieve data
-  cEmpName := oData:employee_name := AllTrim(::params:name)
-  cEmpEmail := oData:email := AllTrim(::params:email)
-  cEmpRole := oData:employee_role := Val( ::params:role )
-  nEmpHolidaysPerYear := oData:holidays_per_year := Val( ::params:holdays_per_year)
+  oData:employee_name := AllTrim(::params:name)
+  oData:email := AllTrim(::params:email)
+  oData:employee_role := Val( ::params:role )
+  oData:holidays_per_year := Val( ::params:holdays_per_year)
   oData:password      := AllTrim(::params:password)
 
-  // Set up default suggested solution in case of failure
-  cSuggestedSolution = "Our algorithm seems to have a problem giving a guess..."
 
-  // Check wheter all required fields are passed
-  requiredFieldsNotPassed := Empty(cEmpName) .OR. Empty(cEmpEmail) .OR. Empty(cEmpRole) .OR. Empty(nEmpHolidaysPerYear)
-
-  // Check wheter all required fields are passed but there is already a user with this email
-  IF(EmployeeModel():findBy( "email", Lower(oData:email) ) != NIL .AND. .NOT.requiredFieldsNotPassed)
-         cSuggestedSolution = "This user seems to be already in the system."
-  ELSEIF(EmployeeModel():insert( oData ))
-      // Redirect back and return true
+  IF(EmployeeModel():insert( oData ))
       ::httpResponse:redirect( "manage-employees.cxp" )
       RETURN .T.
   ENDIF
@@ -41,7 +27,6 @@ ENDIF
 <div class="alert alert-danger" role="alert">
   <h4 class="alert-heading h1 ">Error: @(EmployeeModel():getLastError())</h4>
   <p class="h3">Adding employee failed.</p>
-  <p class="mb-2 mt-0">@(cSuggestedSolution)</p>
   <hr>
   <p class="mb-4 h4">In case this page don't help, don't hesitate contacting us!</p>
   <button type="submit" data-action="./manage-employees.cxp" data-parameter="form:new" class="btn btn-dark">Go
